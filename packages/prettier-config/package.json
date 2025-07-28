@@ -1,0 +1,20 @@
+{
+  "name": "@rusty-butter/prettier-config",
+  "version": "1.0.0",
+  "description": "Shared Prettier configuration for Rusty Butter monorepo",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "keywords": [
+    "prettier",
+    "prettierconfig",
+    "configuration",
+    "formatting"
+  ],
+  "author": "Rusty Butter",
+  "license": "MIT",
+  "peerDependencies": {
+    "prettier": ">=3.0.0"
+  }
+}

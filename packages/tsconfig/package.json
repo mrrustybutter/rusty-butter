@@ -1,0 +1,18 @@
+{
+  "name": "@rusty-butter/tsconfig",
+  "version": "1.0.0",
+  "description": "Shared TypeScript configuration for Rusty Butter monorepo",
+  "main": "index.js",
+  "files": [
+    "base.json",
+    "node.json",
+    "mcp.json"
+  ],
+  "keywords": [
+    "typescript",
+    "tsconfig",
+    "configuration"
+  ],
+  "author": "Rusty Butter",
+  "license": "MIT"
+}

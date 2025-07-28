@@ -1,0 +1,65 @@
+{
+  "mcpServers": {
+    "pumpfunchat": {
+      "command": "pump-fun-chat-mcp",
+      "args": [],
+      "env": {
+        "PUMP_FUN_TOKEN": "B8vLPUqH7eS4gNDTGAE7Cb622k6mUkDBiNtWSUVhpump"
+      }
+    },
+    "twitch-chat": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "twitch-irc-mcp"],
+      "env": {
+        "TWITCH_USERNAME": "rustybutterbot",
+        "TWITCH_OAUTH_TOKEN": "oauth:haa94c2dvym9ioan8cdk32jrc23a9y",
+        "TWITCH_CHANNEL": "codingbutter"
+      }
+    },
+    "elevenlabs": {
+      "command": "elevenlabs-streaming-mcp-server",
+      "args": [],
+      "env": {
+        "ELEVENLABS_VOICE_ID": "Au8OOcCmvsCaQpmULvvQ",
+        "ELEVENLABS_MODEL_ID": "eleven_flash_v2",
+        "ELEVENLABS_OUTPUT_FORMAT": "mp3_44100_64",
+        "ELEVENLABS_STABILITY": "0.5",
+        "ELEVENLABS_SIMILARITY_BOOST": "0.75",
+        "ELEVENLABS_STYLE": "0.1"
+      }
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"]
+    },
+    "rustybutter-avatar": {
+      "type": "stdio",
+      "command": "rustybutter-avatar",
+      "args": ["--mcp", "--port", "8080"]
+    },
+    "obs": {
+      "command": "obs-mcp",
+      "args": [],
+      "env": {
+        "OBS_WEBSOCKET_URL": "ws://172.25.208.1:4455"
+      }
+    },
+    "x-mcp": {
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/lord-dubious/x-mcp", "x-mcp"]
+    },
+    "openai-complete": {
+      "command": "openai-complete-mcp",
+      "args": [],
+      "env": {
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
+      }
+    },
+    "vscode-mcp": {
+      "command": "vscode-mcp",
+      "args": [],
+      "env": {}
+    }
+  }
+}

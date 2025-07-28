@@ -1,0 +1,40 @@
+{
+  "name": "openai-complete-mcp",
+  "version": "1.0.0",
+  "description": "Complete OpenAI MCP server with chat, vision, and image generation capabilities",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "openai-complete-mcp": "./dist/mcp-server.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "mcp": "tsx src/mcp-server.ts",
+    "mcp:build": "npm run build && node dist/mcp-server.js"
+  },
+  "keywords": [
+    "openai",
+    "mcp",
+    "gpt-4",
+    "dall-e",
+    "vision",
+    "model-context-protocol"
+  ],
+  "author": "Rusty Butter",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.17.0",
+    "openai": "^4.104.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.16.5",
+    "tsx": "^4.20.0",
+    "typescript": "^5.8.3"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ]
+}

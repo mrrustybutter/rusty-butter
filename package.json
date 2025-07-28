@@ -1,0 +1,28 @@
+{
+  "name": "rusty-butter-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Rusty Butter monorepo containing all packages",
+  "scripts": {
+    "build": "pnpm -r build",
+    "clean": "pnpm -r exec rm -rf dist node_modules",
+    "dev": "pnpm -r --parallel dev",
+    "test": "pnpm -r test",
+    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint:fix": "eslint . --ext .ts,.tsx,.js,.jsx --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "pnpm -r exec tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.1",
+  "devDependencies": {
+    "@rusty-butter/eslint-config": "workspace:*",
+    "@rusty-butter/prettier-config": "workspace:*",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.5"
+  }
+}

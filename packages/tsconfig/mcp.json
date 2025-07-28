@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "MCP Server",
+  "extends": "./node.json",
+  "compilerOptions": {
+    "target": "ES2020",
+    "lib": ["ES2020"],
+    "types": ["node"],
+
+    /* Specific for MCP servers */
+    "allowSyntheticDefaultImports": true,
+    "noEmitOnError": true
+  }
+}
