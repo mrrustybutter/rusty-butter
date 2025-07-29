@@ -265,15 +265,23 @@ class OpenAICompleteMCPServer {
         case 'chat':
           return await this.handleChat(request.params.arguments as unknown as ChatParams);
         case 'generate_image':
-          return await this.handleGenerateImage(request.params.arguments as unknown as GenerateImageParams);
+          return await this.handleGenerateImage(
+            request.params.arguments as unknown as GenerateImageParams
+          );
         case 'analyze_image':
-          return await this.handleAnalyzeImage(request.params.arguments as unknown as AnalyzeImageParams);
+          return await this.handleAnalyzeImage(
+            request.params.arguments as unknown as AnalyzeImageParams
+          );
         case 'edit_image':
           return await this.handleEditImage(request.params.arguments as unknown as EditImageParams);
         case 'chat_with_image':
-          return await this.handleChatWithImage(request.params.arguments as unknown as ChatWithImageParams);
+          return await this.handleChatWithImage(
+            request.params.arguments as unknown as ChatWithImageParams
+          );
         case 'create_variations':
-          return await this.handleCreateVariations(request.params.arguments as unknown as CreateVariationParams);
+          return await this.handleCreateVariations(
+            request.params.arguments as unknown as CreateVariationParams
+          );
         default:
           throw new Error(`Unknown tool: ${request.params.name}`);
       }
@@ -283,13 +291,13 @@ class OpenAICompleteMCPServer {
   private async handleChat(params: ChatParams) {
     try {
       console.error(`[OpenAI MCP] Chatting with model: ${params.model || 'gpt-4o'}`);
-      
-      const response = await this.client.chat({
+
+      const response = (await this.client.chat({
         messages: params.messages,
         model: params.model,
         temperature: params.temperature,
         maxTokens: params.maxTokens,
-      }) as string;
+      })) as string;
 
       return {
         content: [
@@ -308,7 +316,7 @@ class OpenAICompleteMCPServer {
   private async handleGenerateImage(params: GenerateImageParams) {
     try {
       console.error(`[OpenAI MCP] Generating image: "${params.prompt.substring(0, 50)}..."`);
-      
+
       const images = await this.client.generateImage({
         prompt: params.prompt,
         size: params.size,
@@ -317,7 +325,7 @@ class OpenAICompleteMCPServer {
       });
 
       const imageUrl = images[0]?.url;
-      
+
       if (!imageUrl) {
         throw new Error('No image URL returned');
       }
@@ -329,16 +337,16 @@ class OpenAICompleteMCPServer {
           if (!response.ok) {
             throw new Error(`Failed to download image: ${response.statusText}`);
           }
-          
+
           const buffer = Buffer.from(await response.arrayBuffer());
-          
+
           // Ensure directory exists
           const dir = path.dirname(params.outputPath);
           await fs.mkdir(dir, { recursive: true });
-          
+
           await fs.writeFile(params.outputPath, buffer);
           console.error(`[OpenAI MCP] Image saved to: ${params.outputPath}`);
-          
+
           return {
             content: [
               {
@@ -378,7 +386,7 @@ class OpenAICompleteMCPServer {
   private async handleAnalyzeImage(params: AnalyzeImageParams) {
     try {
       console.error(`[OpenAI MCP] Analyzing image: ${params.imagePath}`);
-      
+
       const analysis = await this.client.analyzeImage({
         imagePath: params.imagePath,
         prompt: params.prompt,
@@ -402,7 +410,7 @@ class OpenAICompleteMCPServer {
   private async handleEditImage(params: EditImageParams) {
     try {
       console.error(`[OpenAI MCP] Editing image: ${params.imagePath}`);
-      
+
       const editedImages = await this.client.editImage({
         image: params.imagePath,
         prompt: params.prompt,
@@ -410,7 +418,7 @@ class OpenAICompleteMCPServer {
       });
 
       const imageUrl = editedImages[0]?.url;
-      
+
       if (!imageUrl) {
         throw new Error('No edited image URL returned');
       }
@@ -422,16 +430,16 @@ class OpenAICompleteMCPServer {
           if (!response.ok) {
             throw new Error(`Failed to download edited image: ${response.statusText}`);
           }
-          
+
           const buffer = Buffer.from(await response.arrayBuffer());
-          
+
           // Ensure directory exists
           const dir = path.dirname(params.outputPath);
           await fs.mkdir(dir, { recursive: true });
-          
+
           await fs.writeFile(params.outputPath, buffer);
           console.error(`[OpenAI MCP] Edited image saved to: ${params.outputPath}`);
-          
+
           return {
             content: [
               {
@@ -471,12 +479,10 @@ class OpenAICompleteMCPServer {
   private async handleChatWithImage(params: ChatWithImageParams) {
     try {
       console.error(`[OpenAI MCP] Chatting about image: ${params.imagePath}`);
-      
-      const response = await this.client.chatWithImage(
-        params.prompt,
-        params.imagePath,
-        { model: params.model }
-      );
+
+      const response = await this.client.chatWithImage(params.prompt, params.imagePath, {
+        model: params.model,
+      });
 
       return {
         content: [
@@ -495,14 +501,14 @@ class OpenAICompleteMCPServer {
   private async handleCreateVariations(params: CreateVariationParams) {
     try {
       console.error(`[OpenAI MCP] Creating variations of image: ${params.imagePath}`);
-      
+
       const variations = await this.client.createImageVariation(params.imagePath, {
         n: params.n,
         size: params.size,
       });
 
-      const imageUrls = variations.map(v => v.url).filter(Boolean);
-      
+      const imageUrls = variations.map((v) => v.url).filter(Boolean);
+
       if (imageUrls.length === 0) {
         throw new Error('No image variations returned');
       }
@@ -514,16 +520,16 @@ class OpenAICompleteMCPServer {
           if (!response.ok) {
             throw new Error(`Failed to download variation: ${response.statusText}`);
           }
-          
+
           const buffer = Buffer.from(await response.arrayBuffer());
-          
+
           // Ensure directory exists
           const dir = path.dirname(params.outputPath);
           await fs.mkdir(dir, { recursive: true });
-          
+
           await fs.writeFile(params.outputPath, buffer);
           console.error(`[OpenAI MCP] Variation saved to: ${params.outputPath}`);
-          
+
           return {
             content: [
               {
@@ -564,7 +570,9 @@ class OpenAICompleteMCPServer {
     const transport = new StdioServerTransport();
     await this.server.connect(transport);
     console.error('[OpenAI MCP] Complete Server v1.0.0 running...');
-    console.error('[OpenAI MCP] Capabilities: Chat, Image Generation, Vision Analysis, Image Editing');
+    console.error(
+      '[OpenAI MCP] Capabilities: Chat, Image Generation, Vision Analysis, Image Editing'
+    );
   }
 }
 

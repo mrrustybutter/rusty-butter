@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Shared Prettier configuration for Rusty Butter monorepo",
   "main": "index.js",
+  "type": "module",
   "files": [
     "index.js"
   ],

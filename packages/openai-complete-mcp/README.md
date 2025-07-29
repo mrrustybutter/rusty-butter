@@ -36,18 +36,22 @@ Add to your MCP client configuration:
 ## Available Tools
 
 ### 1. `chat`
+
 Chat with OpenAI GPT models.
 
 **Parameters:**
+
 - `messages`: Array of chat messages with role and content
 - `model` (optional): Model to use (default: gpt-4o)
 - `temperature` (optional): Temperature for randomness (0-2)
 - `maxTokens` (optional): Maximum tokens in response
 
 ### 2. `generate_image`
+
 Generate images using DALL-E.
 
 **Parameters:**
+
 - `prompt`: Text prompt for image generation
 - `size` (optional): Image size (1024x1024, 1792x1024, 1024x1792)
 - `quality` (optional): Image quality (standard, hd)
@@ -55,26 +59,32 @@ Generate images using DALL-E.
 - `outputPath` (optional): Path to save the generated image
 
 ### 3. `analyze_image`
+
 Analyze images using GPT-4 Vision.
 
 **Parameters:**
+
 - `imagePath`: Path to image file or URL
 - `prompt`: What to analyze or ask about the image
 - `detail` (optional): Level of detail (low, high, auto)
 
 ### 4. `edit_image`
+
 Edit images using DALL-E 2.
 
 **Parameters:**
+
 - `imagePath`: Path to original image
 - `prompt`: Description of edits to make
 - `maskPath` (optional): Optional mask image path
 - `outputPath` (optional): Path to save edited image
 
 ### 5. `chat_with_image`
+
 Chat about an image using GPT-4 Vision.
 
 **Parameters:**
+
 - `prompt`: Question or prompt about the image
 - `imagePath`: Path to image file or URL
 - `model` (optional): Model to use (default: gpt-4o)
@@ -82,6 +92,7 @@ Chat about an image using GPT-4 Vision.
 ## Usage Examples
 
 ### Chat Example
+
 ```javascript
 {
   "tool": "chat",
@@ -95,6 +106,7 @@ Chat about an image using GPT-4 Vision.
 ```
 
 ### Image Generation Example
+
 ```javascript
 {
   "tool": "generate_image",
@@ -108,6 +120,7 @@ Chat about an image using GPT-4 Vision.
 ```
 
 ### Vision Analysis Example
+
 ```javascript
 {
   "tool": "analyze_image",

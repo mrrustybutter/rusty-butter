@@ -1,1 +1,3 @@
-module.exports = require('@rusty-butter/prettier-config');
+import prettierConfig from '@rusty-butter/prettier-config';
+
+export default prettierConfig;

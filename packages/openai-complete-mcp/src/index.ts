@@ -1,7 +1,7 @@
 import { OpenAI } from 'openai';
 import * as fs from 'fs/promises';
 import { EventEmitter } from 'events';
-import type { 
+import type {
   ChatCompletionMessageParam,
   ChatCompletionContentPartImage,
   ChatCompletionContentPartText,
@@ -63,9 +63,11 @@ export class OpenAICompleteClient extends EventEmitter {
   }
 
   // Chat Completion with optional vision support
-  async chat(options: ChatCompletionOptions): Promise<string | AsyncGenerator<string, void, unknown>> {
+  async chat(
+    options: ChatCompletionOptions
+  ): Promise<string | AsyncGenerator<string, void, unknown>> {
     const model = options.model || this.defaultModel;
-    
+
     if (options.stream) {
       return this.streamChat(options);
     }
@@ -83,7 +85,7 @@ export class OpenAICompleteClient extends EventEmitter {
   // Stream chat responses
   private async *streamChat(options: ChatCompletionOptions): AsyncGenerator<string, void, unknown> {
     const model = options.model || this.defaultModel;
-    
+
     const stream = await this.client.chat.completions.create({
       model,
       messages: options.messages,
@@ -101,9 +103,11 @@ export class OpenAICompleteClient extends EventEmitter {
   }
 
   // Generate images using DALL-E
-  async generateImage(options: ImageGenerationOptions): Promise<Array<{ url?: string; b64_json?: string }>> {
+  async generateImage(
+    options: ImageGenerationOptions
+  ): Promise<Array<{ url?: string; b64_json?: string }>> {
     const model = options.model || this.defaultImageModel;
-    
+
     const response = await this.client.images.generate({
       model,
       prompt: options.prompt,
@@ -139,7 +143,7 @@ export class OpenAICompleteClient extends EventEmitter {
   // Analyze images using GPT-4 Vision
   async analyzeImage(options: VisionAnalysisOptions): Promise<string> {
     const model = options.model || this.defaultVisionModel;
-    
+
     // Prepare image URL (either direct URL or base64 data URL)
     const imageUrl = await this.prepareImageUrl(options.imagePath);
 
@@ -150,15 +154,15 @@ export class OpenAICompleteClient extends EventEmitter {
           role: 'user',
           content: [
             { type: 'text', text: options.prompt } as ChatCompletionContentPartText,
-            { 
-              type: 'image_url', 
-              image_url: { 
+            {
+              type: 'image_url',
+              image_url: {
                 url: imageUrl,
-                detail: options.detail || 'auto'
-              } 
-            } as ChatCompletionContentPartImage
-          ]
-        }
+                detail: options.detail || 'auto',
+              },
+            } as ChatCompletionContentPartImage,
+          ],
+        },
       ],
       max_tokens: options.maxTokens || 1000,
     });
@@ -167,14 +171,17 @@ export class OpenAICompleteClient extends EventEmitter {
   }
 
   // Create image variations
-  async createImageVariation(imagePath: string, options?: { n?: number; size?: string }): Promise<Array<{ url?: string; b64_json?: string }>> {
+  async createImageVariation(
+    imagePath: string,
+    options?: { n?: number; size?: string }
+  ): Promise<Array<{ url?: string; b64_json?: string }>> {
     const imageFile = await this.prepareImageFile(imagePath);
-    
+
     const response = await this.client.images.createVariation({
       model: 'dall-e-2', // Only DALL-E 2 supports variations
       image: imageFile,
       n: options?.n || 1,
-      size: options?.size as any || '1024x1024',
+      size: (options?.size || '1024x1024') as '1024x1024' | '512x512' | '256x256',
       response_format: 'url',
     });
 
@@ -217,28 +224,34 @@ export class OpenAICompleteClient extends EventEmitter {
   private getMimeType(filePath: string): string {
     const ext = filePath.split('.').pop()?.toLowerCase();
     const mimeTypes: Record<string, string> = {
-      'png': 'image/png',
-      'jpg': 'image/jpeg',
-      'jpeg': 'image/jpeg',
-      'gif': 'image/gif',
-      'webp': 'image/webp',
+      png: 'image/png',
+      jpg: 'image/jpeg',
+      jpeg: 'image/jpeg',
+      gif: 'image/gif',
+      webp: 'image/webp',
     };
     return mimeTypes[ext || ''] || 'image/png';
   }
 
   // Combined function: Chat with image context
-  async chatWithImage(prompt: string, imagePath: string, options?: { model?: string; maxTokens?: number }): Promise<string> {
+  async chatWithImage(
+    prompt: string,
+    imagePath: string,
+    options?: { model?: string; maxTokens?: number }
+  ): Promise<string> {
     const imageUrl = await this.prepareImageUrl(imagePath);
-    
+
     return this.chat({
       model: options?.model || this.defaultVisionModel,
-      messages: [{
-        role: 'user',
-        content: [
-          { type: 'text', text: prompt } as ChatCompletionContentPartText,
-          { type: 'image_url', image_url: { url: imageUrl } } as ChatCompletionContentPartImage
-        ]
-      }],
+      messages: [
+        {
+          role: 'user',
+          content: [
+            { type: 'text', text: prompt } as ChatCompletionContentPartText,
+            { type: 'image_url', image_url: { url: imageUrl } } as ChatCompletionContentPartImage,
+          ],
+        },
+      ],
       maxTokens: options?.maxTokens,
     }) as Promise<string>;
   }
@@ -248,7 +261,7 @@ export class OpenAICompleteClient extends EventEmitter {
     // Generate image
     const images = await this.generateImage({ prompt });
     const imageUrl = images[0]?.url;
-    
+
     if (!imageUrl) {
       throw new Error('Failed to generate image');
     }
@@ -262,4 +275,3 @@ export class OpenAICompleteClient extends EventEmitter {
     return { imageUrl, description };
   }
 }
-

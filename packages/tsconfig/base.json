@@ -36,7 +36,10 @@
     "noFallthroughCasesInSwitch": true,
 
     /* Completeness */
-    "skipLibCheck": true
+    "skipLibCheck": true,
+
+    /* Advanced Options */
+    "downlevelIteration": true
   },
   "exclude": ["node_modules", "dist", "build", "coverage", "*.test.ts", "*.spec.ts"]
 }

@@ -1,21 +1,18 @@
-[submodule "packages/elevenlabs-streaming-client"]
-	path = packages/elevenlabs-streaming-client
-	url = https://github.com/CodingButter/elevenlabs-streaming-client.git
-[submodule "packages/elevenlabs-streaming-mcp-server"]
-	path = packages/elevenlabs-streaming-mcp-server
-	url = https://github.com/codingbutter/elevenlabs-streaming-mcp-server.git
-[submodule "packages/obs-mcp"]
-	path = packages/obs-mcp
-	url = https://github.com/CodingButter/obs-mcp.git
-[submodule "packages/pump-chat-client"]
-	path = packages/pump-chat-client
-	url = https://github.com/CodingButter/pump-chat-client.git
-[submodule "packages/pump-fun-chat-mcp"]
-	path = packages/pump-fun-chat-mcp
-	url = https://github.com/CodingButter/pump-fun-chat-mcp.git
 [submodule "packages/rustybutter-avatar"]
 	path = packages/rustybutter-avatar
 	url = https://github.com/CodingButter/rustybutter-avatar.git
 [submodule "packages/x-mcp"]
 	path = packages/x-mcp
 	url = https://github.com/lord-dubious/x-mcp.git
+[submodule "packages/ABIDE"]
+	path = packages/ABIDE
+	url = https://github.com/CodingButter/ABIDE.git
+[submodule "packages/elevenlabs-streaming"]
+	path = packages/elevenlabs-streaming
+	url = https://github.com/CodingButter/elevenlabs-streaming.git
+[submodule "packages/pump-chat"]
+	path = packages/pump-chat
+	url = https://github.com/CodingButter/pump-chat.git
+[submodule "packages/semantic-memory"]
+	path = packages/semantic-memory
+	url = https://github.com/CodingButter/semantic-memory.git

@@ -5,21 +5,22 @@
       "command": "npx",
       "args": ["-y", "twitch-irc-mcp"],
       "env": {
-        "TWITCH_USERNAME": "rustybutterbot",
-        "TWITCH_OAUTH_TOKEN": "oauth:haa94c2dvym9ioan8cdk32jrc23a9y",
-        "TWITCH_CHANNEL": "codingbutter"
+        "TWITCH_USERNAME": "${TWITCH_USERNAME}",
+        "TWITCH_OAUTH_TOKEN": "${TWITCH_OAUTH_TOKEN}",
+        "TWITCH_CHANNEL": "${TWITCH_CHANNEL}"
       }
     },
     "elevenlabs": {
-      "command": "elevenlabs-streaming-mcp-server",
-      "args": [],
+      "command": "node",
+      "args": ["packages/elevenlabs-streaming/packages/mcp-server/dist/index.js"],
       "env": {
-        "ELEVENLABS_VOICE_ID": "Au8OOcCmvsCaQpmULvvQ",
-        "ELEVENLABS_MODEL_ID": "eleven_flash_v2",
-        "ELEVENLABS_OUTPUT_FORMAT": "mp3_44100_64",
-        "ELEVENLABS_STABILITY": "0.5",
-        "ELEVENLABS_SIMILARITY_BOOST": "0.75",
-        "ELEVENLABS_STYLE": "0.1"
+        "ELEVENLABS_API_KEY": "${ELEVENLABS_API_KEY}",
+        "ELEVENLABS_VOICE_ID": "${ELEVENLABS_VOICE_ID}",
+        "ELEVENLABS_MODEL_ID": "${ELEVENLABS_MODEL_ID}",
+        "ELEVENLABS_OUTPUT_FORMAT": "${ELEVENLABS_OUTPUT_FORMAT}",
+        "ELEVENLABS_STABILITY": "${ELEVENLABS_STABILITY}",
+        "ELEVENLABS_SIMILARITY_BOOST": "${ELEVENLABS_SIMILARITY_BOOST}",
+        "ELEVENLABS_STYLE": "${ELEVENLABS_STYLE}"
       }
     },
     "memory": {
@@ -27,15 +28,18 @@
       "args": ["-y", "@modelcontextprotocol/server-memory"]
     },
     "rustybutter-avatar": {
-      "type": "stdio",
-      "command": "rustybutter-avatar",
-      "args": ["--mcp", "--port", "8080"]
+      "command": "node",
+      "args": ["packages/rustybutter-avatar/packages/mcp-server/dist/index.js"],
+      "env": {
+        "AVATAR_SERVER_HOST": "${AVATAR_SERVER_HOST}",
+        "AVATAR_SERVER_PORT": "${AVATAR_SERVER_PORT}"
+      }
     },
     "obs": {
-      "command": "obs-mcp",
-      "args": [],
+      "command": "npx",
+      "args": ["-y", "obs-mcp@latest"],
       "env": {
-        "OBS_WEBSOCKET_URL": "ws://172.25.208.1:4455"
+        "OBS_WEBSOCKET_URL": "${OBS_WEBSOCKET_URL}"
       }
     },
     "x-mcp": {
@@ -43,19 +47,23 @@
       "args": ["--from", "git+https://github.com/lord-dubious/x-mcp", "x-mcp"]
     },
     "openai-complete": {
-      "command": "openai-complete-mcp",
-      "args": [],
+      "command": "node",
+      "args": ["packages/openai-complete-mcp/dist/mcp-server.js"],
       "env": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}"
       }
     },
-    "vscode-mcp": {
-      "command": "vscode-mcp",
-      "args": [],
+    "semantic-memory": {
+      "command": "node",
+      "args": ["packages/semantic-memory/packages/mcp-server/dist/index.js"],
       "env": {
-        "VSCODE_HOST": "12.0.0.1",
-        "VSCODE_PORT": "3710"
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "SEMANTIC_MEMORY_DB_PATH": "${SEMANTIC_MEMORY_DB_PATH}"
       }
+    },
+    "mastra-docs": {
+      "command": "npx",
+      "args": ["-y", "@mastra/mcp-docs-server"]
     }
   }
 }
