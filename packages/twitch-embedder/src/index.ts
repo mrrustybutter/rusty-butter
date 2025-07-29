@@ -40,14 +40,15 @@ class TwitchChatEmbedder {
     this.stateFile = path.join(__dirname, '../last_processed.json');
     this.lastProcessed = {
       twitch: new Date().toISOString(),
-      pumpfun: new Date().toISOString()
+      pumpfun: new Date().toISOString(),
     };
-    
+
     // Initialize semantic memory client with shared database path
-    const dbPath = process.env.SEMANTIC_MEMORY_DB_PATH || path.join(process.cwd(), 'semantic_memory_db');
+    const dbPath =
+      process.env.SEMANTIC_MEMORY_DB_PATH || path.join(process.cwd(), 'semantic_memory_db');
     this.semanticMemory = new SemanticMemoryClient({
-      dbPath: dbPath,
-      openAIApiKey: process.env.OPENAI_API_KEY
+      dbPath,
+      openAIApiKey: process.env.OPENAI_API_KEY,
     });
     console.log(`[TwitchEmbedder] Using semantic memory database at: ${dbPath}`);
   }
@@ -57,7 +58,7 @@ class TwitchChatEmbedder {
       const data = await fs.readFile(this.stateFile, 'utf-8');
       this.lastProcessed = JSON.parse(data);
       console.log('[TwitchEmbedder] Loaded last processed state');
-    } catch (error) {
+    } catch {
       console.log('[TwitchEmbedder] No previous state found, starting fresh');
     }
   }
@@ -69,27 +70,27 @@ class TwitchChatEmbedder {
 
   async connectToTwitch(): Promise<void> {
     console.log('[TwitchEmbedder] Connecting to Twitch IRC...');
-    
+
     this.twitchClient = new tmi.Client({
       options: { debug: false },
       identity: {
         username: TWITCH_USERNAME,
-        password: TWITCH_OAUTH_TOKEN
+        password: TWITCH_OAUTH_TOKEN,
       },
-      channels: [TWITCH_CHANNEL]
+      channels: [TWITCH_CHANNEL],
     });
 
     // Set up message handler
     this.twitchClient.on('message', (channel, tags, message, self) => {
       if (self) return; // Ignore messages from the bot itself
-      
+
       const chatMessage: ChatMessage = {
         timestamp: new Date().toISOString(),
         username: tags.username || 'anonymous',
-        message: message,
-        channel: channel.replace('#', '')
+        message,
+        channel: channel.replace('#', ''),
       };
-      
+
       this.messageBuffer.push(chatMessage);
       console.log(`[TwitchEmbedder] Buffered message from ${chatMessage.username}`);
     });
@@ -100,49 +101,51 @@ class TwitchChatEmbedder {
 
   async processMessageBuffer(): Promise<void> {
     if (this.isProcessing || this.messageBuffer.length === 0) return;
-    
+
     this.isProcessing = true;
     const messagesToProcess = [...this.messageBuffer];
     this.messageBuffer = [];
 
     try {
       console.log(`[TwitchEmbedder] Processing ${messagesToProcess.length} buffered messages...`);
-      
+
       // Filter out messages we've already processed
-      const newMessages = messagesToProcess.filter(msg => 
-        new Date(msg.timestamp) > new Date(this.lastProcessed.twitch)
+      const newMessages = messagesToProcess.filter(
+        (msg) => new Date(msg.timestamp) > new Date(this.lastProcessed.twitch)
       );
 
       if (newMessages.length > 0) {
         console.log(`[TwitchEmbedder] Found ${newMessages.length} new messages to embed`);
-        
+
         // Batch embed for efficiency
-        const items = newMessages.map(msg => ({
+        const items = newMessages.map((msg) => ({
           type: 'chat' as const,
           content: `${msg.username}: ${msg.message}`,
           metadata: {
             platform: 'twitch',
             channel: msg.channel,
             username: msg.username,
-            timestamp: msg.timestamp
-          }
+            timestamp: msg.timestamp,
+          },
         }));
 
         // Process in batches of 10 to avoid overwhelming the API
         const batchSize = 10;
         for (let i = 0; i < items.length; i += batchSize) {
           const batch = items.slice(i, i + batchSize);
-          
+
           // Embed batch
           await this.semanticMemory.embedBatch(batch);
-          
-          console.log(`[TwitchEmbedder] Embedded batch ${Math.floor(i/batchSize) + 1}/${Math.ceil(items.length/batchSize)}`);
+
+          console.log(
+            `[TwitchEmbedder] Embedded batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(items.length / batchSize)}`
+          );
         }
-        
+
         // Update last processed timestamp
         this.lastProcessed.twitch = newMessages[newMessages.length - 1].timestamp;
         await this.saveState();
-        
+
         console.log(`[TwitchEmbedder] Successfully embedded ${newMessages.length} messages`);
       }
     } catch (error) {
@@ -159,7 +162,9 @@ class TwitchChatEmbedder {
     await this.semanticMemory.initialize();
     await this.connectToTwitch();
 
-    console.log(`[TwitchEmbedder] Starting continuous embedding service (interval: ${CHECK_INTERVAL}ms)`);
+    console.log(
+      `[TwitchEmbedder] Starting continuous embedding service (interval: ${CHECK_INTERVAL}ms)`
+    );
 
     // Process buffer periodically
     setInterval(() => {
@@ -176,29 +181,29 @@ class TwitchChatEmbedder {
     // Handle shutdown
     process.on('SIGINT', async () => {
       console.log('[TwitchEmbedder] Shutting down...');
-      
+
       // Process any remaining messages
       await this.processMessageBuffer();
       await this.saveState();
-      
+
       if (this.twitchClient) {
         await this.twitchClient.disconnect();
       }
-      
+
       process.exit(0);
     });
 
     process.on('SIGTERM', async () => {
       console.log('[TwitchEmbedder] Shutting down...');
-      
+
       // Process any remaining messages
       await this.processMessageBuffer();
       await this.saveState();
-      
+
       if (this.twitchClient) {
         await this.twitchClient.disconnect();
       }
-      
+
       process.exit(0);
     });
   }
