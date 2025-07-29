@@ -1,9 +1,6 @@
 [submodule "packages/rustybutter-avatar"]
 	path = packages/rustybutter-avatar
 	url = https://github.com/CodingButter/rustybutter-avatar.git
-[submodule "packages/x-mcp"]
-	path = packages/x-mcp
-	url = https://github.com/lord-dubious/x-mcp.git
 [submodule "packages/ABIDE"]
 	path = packages/ABIDE
 	url = https://github.com/CodingButter/ABIDE.git
@@ -16,3 +13,6 @@
 [submodule "packages/semantic-memory"]
 	path = packages/semantic-memory
 	url = https://github.com/CodingButter/semantic-memory.git
+[submodule "packages/x-mcp"]
+	path = packages/x-mcp
+	url = https://github.com/CodingButter/x-mcp.git
