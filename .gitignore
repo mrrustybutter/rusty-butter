@@ -52,3 +52,6 @@ venv/
 
 # Lock files at root only (packages maintain their own)
 /pnpm-lock.yaml
+
+# Database files
+semantic_memory_db/

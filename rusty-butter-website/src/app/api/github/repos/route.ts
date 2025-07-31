@@ -110,6 +110,25 @@ export async function GET() {
           [repoData.language || 'Unknown', 0]
         )[0]
 
+        // Get commit activity (last 52 weeks)
+        const commitActivityResponse = await fetch(
+          `https://api.github.com/repos/${GITHUB_USERNAME}/${repoName}/stats/commit_activity`,
+          {
+            headers: {
+              'Accept': 'application/vnd.github+json',
+              'User-Agent': 'rusty-butter-website',
+              ...(process.env.GITHUB_TOKEN && {
+                'Authorization': `Bearer ${process.env.GITHUB_TOKEN}`
+              })
+            }
+          }
+        )
+
+        let commitActivity = []
+        if (commitActivityResponse.ok) {
+          commitActivity = await commitActivityResponse.json()
+        }
+
         return {
           id: repoData.id,
           name: repoData.name,
@@ -125,7 +144,8 @@ export async function GET() {
           homepage: repoData.homepage,
           private: repoData.private,
           lastUpdated: repoData.pushed_at,
-          languages
+          languages,
+          commitActivity
         }
       } catch (error) {
         console.error(`Error fetching ${repoName}:`, error)

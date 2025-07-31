@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useTheme } from './providers'
 import './terminal.css'
 import StreamingActivityGraph from '@/components/StreamingActivityGraph'
+import RepoActivityGraph from '@/components/RepoActivityGraph'
 import { 
   Radio, 
   Github, 
@@ -67,6 +68,7 @@ interface GitHubRepo {
   private: boolean
   lastUpdated: string
   languages: Record<string, number>
+  commitActivity: any[]
 }
 
 interface GitHubData {
@@ -671,7 +673,7 @@ export default function Home() {
                       }`}>
                         {repo.description}
                       </p>
-                      <div className="flex items-center gap-4 text-xs">
+                      <div className="flex items-center gap-4 text-xs mb-2">
                         {repo.language && (
                           <span className="flex items-center gap-1">
                             <div 
@@ -690,6 +692,13 @@ export default function Home() {
                           {repo.forks}
                         </span>
                       </div>
+                      {repo.commitActivity && repo.commitActivity.length > 0 && (
+                        <RepoActivityGraph 
+                          theme={theme} 
+                          commitActivity={repo.commitActivity} 
+                          repoName={repo.name}
+                        />
+                      )}
                     </Link>
                   ))}
                 </div>
