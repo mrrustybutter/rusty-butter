@@ -1,15 +1,15 @@
 [submodule "packages/rustybutter-avatar"]
 	path = packages/rustybutter-avatar
-	url = https://github.com/CodingButter/rustybutter-avatar.git
+	url = https://github.com/mrrustybutter/rustybutter-avatar.git
 [submodule "packages/ABIDE"]
 	path = packages/ABIDE
-	url = https://github.com/CodingButter/ABIDE.git
+	url = https://github.com/mrrustybutter/ABIDE.git
 [submodule "packages/elevenlabs-streaming"]
 	path = packages/elevenlabs-streaming
-	url = https://github.com/CodingButter/elevenlabs-streaming.git
+	url = https://github.com/mrrustybutter/elevenlabs-streaming.git
 [submodule "packages/pump-chat"]
 	path = packages/pump-chat
-	url = https://github.com/CodingButter/pump-chat.git
+	url = https://github.com/mrrustybutter/pump-chat.git
 [submodule "packages/semantic-memory"]
 	path = packages/semantic-memory
-	url = https://github.com/CodingButter/semantic-memory.git
+	url = https://github.com/mrrustybutter/semantic-memory.git
