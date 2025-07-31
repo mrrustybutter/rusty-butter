@@ -1,0 +1,64 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git check-ignore:*)"
+    ],
+    "deny": []
+  },
+  "enableAllProjectMcpServers": false,
+  "enabledMcpjsonServers": [
+    "twitch-chat",
+    "pumpfunchat",
+    "elevenlabs",
+    "memory",
+    "rustybutter-avatar",
+    "obs",
+    "x-mcp",
+    "openai-complete",
+    "semantic-memory",
+    "mastra-docs",
+    "playwright"
+  ],
+  "hooks": {
+    "PreCompact": [
+      {
+        "matcher": "auto",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/codingbutter/GitHub/rusty-butter/scripts/embed-claude-conversation.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "manual",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/home/codingbutter/GitHub/rusty-butter/scripts/embed-claude-conversation.sh"
+          }
+        ]
+      }
+    ],
+    "PostCompact": [
+      {
+        "matcher": "auto",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/stream"
+          }
+        ]
+      },
+      {
+        "matcher": "manual",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/stream"
+          }
+        ]
+      }
+    ]
+  }
+}
