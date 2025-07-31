@@ -11,6 +11,7 @@
       }
     },
     "elevenlabs": {
+      "type": "stdio",
       "command": "node",
       "args": ["packages/elevenlabs-streaming/packages/mcp-server/dist/index.js"],
       "env": {
@@ -24,10 +25,12 @@
       }
     },
     "memory": {
+      "type": "stdio",
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-memory"]
     },
     "rustybutter-avatar": {
+      "type": "stdio",
       "command": "node",
       "args": ["packages/rustybutter-avatar/packages/mcp-server/dist/index.js"],
       "env": {
@@ -36,6 +39,7 @@
       }
     },
     "obs": {
+      "type": "stdio",
       "command": "npx",
       "args": ["-y", "obs-mcp@latest"],
       "env": {
@@ -43,10 +47,12 @@
       }
     },
     "x-mcp": {
+      "type": "stdio",
       "command": "uvx",
       "args": ["--from", "git+https://github.com/lord-dubious/x-mcp", "x-mcp"]
     },
     "openai-complete": {
+      "type": "stdio",
       "command": "node",
       "args": ["packages/openai-complete-mcp/dist/mcp-server.js"],
       "env": {
@@ -54,6 +60,7 @@
       }
     },
     "semantic-memory": {
+      "type": "stdio",
       "command": "node",
       "args": ["packages/semantic-memory/packages/mcp-server/dist/index.js"],
       "env": {
@@ -62,8 +69,23 @@
       }
     },
     "mastra-docs": {
+      "type": "stdio",
       "command": "npx",
       "args": ["-y", "@mastra/mcp-docs-server"]
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@executeautomation/playwright-mcp-server"]
+    },
+    "pumpfunchat": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["packages/pump-chat/packages/mcp-server/dist/mcp-server.js"],
+      "env": {
+        "PUMP_CHAT_URL": "${PUMP_CHAT_URL}",
+        "PUMP_CHAT_TOKEN": "${PUMP_CHAT_TOKEN}"
+      }
     }
   }
 }
