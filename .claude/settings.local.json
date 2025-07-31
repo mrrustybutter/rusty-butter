@@ -1,8 +1,6 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(git check-ignore:*)"
-    ],
+    "allow": ["*"],
     "deny": []
   },
   "enableAllProjectMcpServers": false,
