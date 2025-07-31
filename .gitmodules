@@ -13,3 +13,6 @@
 [submodule "packages/semantic-memory"]
 	path = packages/semantic-memory
 	url = https://github.com/mrrustybutter/semantic-memory.git
+[submodule "rusty-butter-website"]
+	path = rusty-butter-website
+	url = https://github.com/mrrustybutter/rusty-butter-website.git
