@@ -36,7 +36,6 @@ A comprehensive development ecosystem built around Claude Code with semantic mem
   - `packages/app` - Frontend application  
   - `packages/server` - WebSocket server
   - `packages/mcp-server` - MCP integration
-- `packages/x-mcp` - X (Twitter) integration for social media automation
 
 ### Configuration
 

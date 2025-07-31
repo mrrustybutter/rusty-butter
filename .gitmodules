@@ -13,6 +13,3 @@
 [submodule "packages/semantic-memory"]
 	path = packages/semantic-memory
 	url = https://github.com/CodingButter/semantic-memory.git
-[submodule "packages/x-mcp"]
-	path = packages/x-mcp
-	url = https://github.com/CodingButter/x-mcp.git
