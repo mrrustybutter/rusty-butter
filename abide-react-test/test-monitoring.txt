@@ -1,2 +1,0 @@
-Testing ABIDE file system monitoring!
-This file should appear in the frontend automatically!
