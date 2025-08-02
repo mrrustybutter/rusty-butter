@@ -24,11 +24,6 @@
         "ELEVENLABS_STYLE": "${ELEVENLABS_STYLE}"
       }
     },
-    "memory": {
-      "type": "stdio",
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-memory"]
-    },
     "rustybutter-avatar": {
       "type": "stdio",
       "command": "node",
@@ -44,19 +39,6 @@
       "args": ["-y", "obs-mcp@latest"],
       "env": {
         "OBS_WEBSOCKET_URL": "${OBS_WEBSOCKET_URL}"
-      }
-    },
-    "x-mcp": {
-      "type": "stdio",
-      "command": "uvx",
-      "args": ["--from", "git+https://github.com/lord-dubious/x-mcp", "x-mcp"]
-    },
-    "openai-complete": {
-      "type": "stdio",
-      "command": "node",
-      "args": ["packages/openai-complete-mcp/dist/mcp-server.js"],
-      "env": {
-        "OPENAI_API_KEY": "${OPENAI_API_KEY}"
       }
     },
     "semantic-memory": {
@@ -78,14 +60,38 @@
       "command": "npx",
       "args": ["-y", "@executeautomation/playwright-mcp-server"]
     },
-    "pumpfunchat": {
+    "twitter": {
       "type": "stdio",
       "command": "node",
-      "args": ["packages/pump-chat/packages/mcp-server/dist/mcp-server.js"],
+      "args": ["packages/twitter-api-mcp/index.js"],
       "env": {
-        "PUMP_CHAT_URL": "${PUMP_CHAT_URL}",
-        "PUMP_CHAT_TOKEN": "${PUMP_CHAT_TOKEN}"
+        "TWITTER_API_KEY": "${X_API_KEY}",
+        "TWITTER_API_SECRET": "${X_API_SECRET_KEY}",
+        "TWITTER_ACCESS_TOKEN": "${X_ACCESS_TOKEN}",
+        "TWITTER_ACCESS_TOKEN_SECRET": "${X_ACCESS_TOKEN_SECRET}",
+        "TWITTER_BEARER_TOKEN": "${X_BEARER_TOKEN}"
       }
+    },
+    "discord": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["packages/discord-mcp/dist/index.js"],
+      "env": {
+        "DISCORD_TOKEN": "${DISCORD_TOKEN}",
+        "ELEVENLABS_API_KEY": "${ELEVENLABS_API_KEY}"
+      }
+    },
+    "pumpfunchat": {
+      "command": "pump-fun-chat-mcp",
+      "args": [],
+      "env": {
+        "PUMP_FUN_TOKEN": "B8vLPUqH7eS4gNDTGAE7Cb622k6mUkDBiNtWSUVhpump"
+      }
+    },
+    "local-tts": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["packages/local-tts/ultimate-tts-mcp/index.js"]
     }
   }
 }

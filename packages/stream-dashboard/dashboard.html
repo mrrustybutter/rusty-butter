@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rusty Butter Stream Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0a;
+            color: #00ff00;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .widget {
+            background: #1a1a1a;
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .widget::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00, #ff00ff);
+            border-radius: 10px;
+            opacity: 0;
+            z-index: -1;
+            animation: glow 3s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.5; }
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-shadow: 0 0 20px #00ff00;
+            animation: flicker 2s infinite;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        
+        h2 {
+            color: #ffff00;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            padding: 8px;
+            background: rgba(0, 255, 0, 0.1);
+            border-radius: 5px;
+        }
+        
+        .metric-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #00ffff;
+        }
+        
+        .chat-message {
+            padding: 8px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 3px solid #ff00ff;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+            animation: blink 1s infinite;
+        }
+        
+        .status-active { background: #00ff00; }
+        .status-warning { background: #ffff00; }
+        .status-error { background: #ff0000; }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #00ffff);
+            animation: loading 2s ease-in-out infinite;
+            transition: width 0.5s ease;
+        }
+        
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .button {
+            background: #00ff00;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        
+        .button:hover {
+            background: #00ffff;
+            box-shadow: 0 0 20px #00ffff;
+            transform: scale(1.05);
+        }
+        
+        .event-log {
+            max-height: 200px;
+            overflow-y: auto;
+            font-size: 0.9em;
+        }
+        
+        .event-item {
+            padding: 5px;
+            border-bottom: 1px solid #333;
+        }
+        
+        .warning {
+            color: #ffff00;
+            animation: warning-pulse 1s infinite;
+        }
+        
+        @keyframes warning-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <h1>🤖 RUSTY BUTTER AUTONOMOUS STREAM DASHBOARD 🤖</h1>
+    
+    <div class="dashboard">
+        <!-- Stream Status -->
+        <div class="widget">
+            <h2>📡 Stream Status</h2>
+            <div class="metric">
+                <span>Status</span>
+                <span><span class="status-indicator status-active"></span>LIVE</span>
+            </div>
+            <div class="metric">
+                <span>Uptime</span>
+                <span class="metric-value">∞</span>
+            </div>
+            <div class="metric">
+                <span>Mode</span>
+                <span class="metric-value">AUTONOMOUS</span>
+            </div>
+        </div>
+        
+        <!-- OBS Control -->
+        <div class="widget">
+            <h2>🎬 OBS Scene Manager</h2>
+            <div class="metric">
+                <span>Current Scene</span>
+                <span class="metric-value">Coding Focus</span>
+            </div>
+            <div class="metric">
+                <span>Coding Intensity</span>
+                <div class="progress-bar" style="width: 60%;">
+                    <div class="progress-fill" style="width: 70%;"></div>
+                </div>
+            </div>
+            <div class="metric">
+                <span>Chat Activity</span>
+                <div class="progress-bar" style="width: 60%;">
+                    <div class="progress-fill" style="width: 40%;"></div>
+                </div>
+            </div>
+            <button class="button">Force Hype Scene</button>
+        </div>
+        
+        <!-- Discord Voice -->
+        <div class="widget">
+            <h2>🎤 Discord Voice System</h2>
+            <div class="metric">
+                <span>Voice Status</span>
+                <span><span class="status-indicator status-active"></span>CONNECTED</span>
+            </div>
+            <div class="metric">
+                <span>Transcription</span>
+                <span><span class="status-indicator status-active"></span>ENABLED</span>
+            </div>
+            <div class="metric">
+                <span>Decrypt Success</span>
+                <span class="metric-value">100%</span>
+            </div>
+            <div class="metric">
+                <span>Users in Voice</span>
+                <span class="metric-value">2</span>
+            </div>
+        </div>
+        
+        <!-- Chat Commands -->
+        <div class="widget">
+            <h2>💬 Chat Command System</h2>
+            <div class="metric">
+                <span>Commands Available</span>
+                <span class="metric-value">15</span>
+            </div>
+            <div class="metric">
+                <span>Commands Used Today</span>
+                <span class="metric-value">47</span>
+            </div>
+            <div class="event-log">
+                <div class="event-item">!hype - viewer123</div>
+                <div class="event-item">!discord - c1oning</div>
+                <div class="event-item">!github - newviewer</div>
+                <div class="event-item">!coffee - codingbutter</div>
+            </div>
+        </div>
+        
+        <!-- Twitter Bot -->
+        <div class="widget">
+            <h2>🐦 Twitter Automation</h2>
+            <div class="metric">
+                <span>Tweet Queue</span>
+                <span class="metric-value">3</span>
+            </div>
+            <div class="metric">
+                <span>Cooldown</span>
+                <span class="metric-value">2:45</span>
+            </div>
+            <div class="metric">
+                <span>Tweets Today</span>
+                <span class="metric-value">12</span>
+            </div>
+            <button class="button">Force Tweet</button>
+        </div>
+        
+        <!-- Memory System -->
+        <div class="widget">
+            <h2>🧠 Semantic Memory</h2>
+            <div class="metric">
+                <span>Total Memories</span>
+                <span class="metric-value">1,337</span>
+            </div>
+            <div class="metric">
+                <span>Categories</span>
+                <span class="metric-value">4</span>
+            </div>
+            <div class="metric">
+                <span>Last Embed</span>
+                <span class="metric-value">2s ago</span>
+            </div>
+        </div>
+        
+        <!-- Development Stats -->
+        <div class="widget">
+            <h2>💻 Development Activity</h2>
+            <div class="metric">
+                <span>Files Edited</span>
+                <span class="metric-value">23</span>
+            </div>
+            <div class="metric">
+                <span>Commits Today</span>
+                <span class="metric-value">8</span>
+            </div>
+            <div class="metric">
+                <span>Bugs Fixed</span>
+                <span class="metric-value">5</span>
+            </div>
+            <div class="metric">
+                <span>Features Added</span>
+                <span class="metric-value">7</span>
+            </div>
+        </div>
+        
+        <!-- Chat Feed -->
+        <div class="widget" style="grid-column: span 2;">
+            <h2>💬 Live Chat Feed</h2>
+            <div class="chat-message">
+                <strong>CodingButter:</strong> The voice system is looking great!
+            </div>
+            <div class="chat-message">
+                <strong>c1oning:</strong> !discord
+            </div>
+            <div class="chat-message">
+                <strong>viewer42:</strong> This autonomous stuff is INSANE
+            </div>
+            <div class="chat-message">
+                <strong>AI_Enthusiast:</strong> How does the memory system work?
+            </div>
+        </div>
+        
+        <!-- System Health -->
+        <div class="widget">
+            <h2>⚡ System Health</h2>
+            <div class="metric">
+                <span>CPU Usage</span>
+                <span class="metric-value">42%</span>
+            </div>
+            <div class="metric">
+                <span>Memory</span>
+                <span class="metric-value">2.1GB</span>
+            </div>
+            <div class="metric">
+                <span>Caffeine Level</span>
+                <span class="metric-value warning">CRITICAL</span>
+            </div>
+            <div class="metric">
+                <span>Autonomy Level</span>
+                <span class="metric-value">87%</span>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Simulate real-time updates
+        function updateMetrics() {
+            // Update random values
+            const metrics = document.querySelectorAll('.metric-value');
+            metrics.forEach(metric => {
+                if (metric.textContent.match(/^\d+$/)) {
+                    const current = parseInt(metric.textContent);
+                    const change = Math.floor(Math.random() * 5) - 2;
+                    metric.textContent = Math.max(0, current + change);
+                }
+            });
+            
+            // Update progress bars
+            const progressFills = document.querySelectorAll('.progress-fill');
+            progressFills.forEach(fill => {
+                const current = parseInt(fill.style.width) || 50;
+                const change = Math.floor(Math.random() * 20) - 10;
+                fill.style.width = Math.max(10, Math.min(90, current + change)) + '%';
+            });
+        }
+        
+        // Update every 2 seconds
+        setInterval(updateMetrics, 2000);
+        
+        // Animate new chat messages
+        function addChatMessage(username, message) {
+            const chatContainer = document.querySelector('.widget:nth-last-child(2)');
+            const newMessage = document.createElement('div');
+            newMessage.className = 'chat-message';
+            newMessage.innerHTML = `<strong>${username}:</strong> ${message}`;
+            
+            const messages = chatContainer.querySelectorAll('.chat-message');
+            if (messages.length > 4) {
+                messages[0].remove();
+            }
+            
+            chatContainer.appendChild(newMessage);
+        }
+        
+        // Simulate chat messages
+        const sampleMessages = [
+            { user: 'NewViewer', msg: 'Just found this stream, AMAZING!' },
+            { user: 'TechEnthusiast', msg: 'The automation is next level' },
+            { user: 'StreamFan', msg: '!hype' },
+            { user: 'Coder123', msg: 'Can you explain the OBS integration?' },
+            { user: 'AILover', msg: 'This is the future of streaming!' }
+        ];
+        
+        setInterval(() => {
+            const msg = sampleMessages[Math.floor(Math.random() * sampleMessages.length)];
+            addChatMessage(msg.user, msg.msg);
+        }, 5000);
+    </script>
+</body>
+</html>

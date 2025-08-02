@@ -15,7 +15,8 @@
     "format:check": "prettier --check .",
     "typecheck": "pnpm -r exec tsc --noEmit",
     "claude": "./scripts/claude-with-env.sh",
-    "claude:show-env": "./scripts/show-env.sh"
+    "claude:show-env": "./scripts/show-env.sh",
+    "rusty": "pnpm claude --continue"
   },
   "engines": {
     "node": ">=16.0.0",
