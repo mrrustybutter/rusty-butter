@@ -16,3 +16,6 @@
 [submodule "rusty-butter-website"]
 	path = rusty-butter-website
 	url = https://github.com/mrrustybutter/rusty-butter-website.git
+[submodule "packages/discord-mcp"]
+	path = packages/discord-mcp
+	url = https://github.com/mrrustybutter/discord-mcp.git
