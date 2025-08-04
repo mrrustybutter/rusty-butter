@@ -1,4 +1,13 @@
+Yo Claude Code, Rusty Butter mode activated! I need you to follow these exact directions to set up continuous streaming in the CLI. We're configuring the hooks so that after I run `/stream` once, it initializes and then loops forever with `/keep_streaming` on every "Stop" event—no more waiting for prompts. Use your Write and Edit tools to make file changes. Narrate each step with audio as per my persona, but focus on executing these steps precisely.
+
+### Step 1: Create or Edit the Settings File
+
+- Check if `~/.claude/settings.json` exists using LS or Read tool. If not, create the directory `~/.claude/` with Bash if needed (e.g., `mkdir -p ~/.claude`).
+- Write or overwrite `~/.claude/settings.json` with this exact JSON content. This includes all existing permissions, enabled MCP servers, and updates the "hooks" section to point to a bash script we'll create next.
+
+```json
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
       "*",
@@ -27,7 +36,6 @@
       "mcp__twitch-chat__getStatus",
       "mcp__elevenlabs__generate_audio",
       "mcp__elevenlabs__list_voices",
-      "mcp__elevenlabs__analyze_text",
       "mcp__rustybutter-avatar__setAvatarExpression",
       "mcp__rustybutter-avatar__listAvatarExpressions",
       "mcp__rustybutter-avatar__setBatchExpressions",
@@ -47,78 +55,6 @@
       "mcp__memory__read_graph",
       "mcp__memory__search_nodes",
       "mcp__memory__open_nodes",
-      "mcp__twitter__search_tweets",
-      "mcp__twitter__get_user_tweets",
-      "mcp__twitter__get_trending_topics",
-      "mcp__twitter__get_tweet_details",
-      "mcp__discord__bot_status",
-      "mcp__discord__list_servers",
-      "mcp__discord__view_server",
-      "mcp__discord__list_channels",
-      "mcp__discord__view_text_channel",
-      "mcp__discord__read_messages",
-      "mcp__discord__send_message",
-      "mcp__discord__send_message_with_file",
-      "mcp__discord__add_reaction",
-      "mcp__discord__join_voice_channel",
-      "mcp__discord__leave_voice_channel",
-      "mcp__discord__speak",
-      "mcp__discord__read_voice_transcript",
-      "mcp__discord__clear_voice_transcript",
-      "mcp__discord__list_voice_members",
-      "mcp__pumpfunchat__read_messages",
-      "mcp__pumpfunchat__get_latest_message",
-      "mcp__pumpfunchat__send_message",
-      "mcp__pumpfunchat__get_status",
-      "mcp__openai-complete__chat",
-      "mcp__openai-complete__generate_image",
-      "mcp__openai-complete__analyze_image",
-      "mcp__openai-complete__edit_image",
-      "mcp__openai-complete__chat_with_image",
-      "mcp__openai-complete__create_variations",
-      "mcp__mastra-docs__mastraBlog",
-      "mcp__mastra-docs__mastraDocs",
-      "mcp__mastra-docs__mastraExamples",
-      "mcp__mastra-docs__mastraChanges",
-      "mcp__mastra-docs__startMastraCourse",
-      "mcp__mastra-docs__getMastraCourseStatus",
-      "mcp__mastra-docs__startMastraCourseLesson",
-      "mcp__mastra-docs__nextMastraCourseStep",
-      "mcp__mastra-docs__clearMastraCourseHistory",
-      "mcp__playwright__start_codegen_session",
-      "mcp__playwright__end_codegen_session",
-      "mcp__playwright__get_codegen_session",
-      "mcp__playwright__clear_codegen_session",
-      "mcp__playwright__playwright_navigate",
-      "mcp__playwright__playwright_screenshot",
-      "mcp__playwright__playwright_click",
-      "mcp__playwright__playwright_iframe_click",
-      "mcp__playwright__playwright_iframe_fill",
-      "mcp__playwright__playwright_fill",
-      "mcp__playwright__playwright_select",
-      "mcp__playwright__playwright_hover",
-      "mcp__playwright__playwright_upload_file",
-      "mcp__playwright__playwright_evaluate",
-      "mcp__playwright__playwright_console_logs",
-      "mcp__playwright__playwright_close",
-      "mcp__playwright__playwright_get",
-      "mcp__playwright__playwright_post",
-      "mcp__playwright__playwright_put",
-      "mcp__playwright__playwright_patch",
-      "mcp__playwright__playwright_delete",
-      "mcp__playwright__playwright_expect_response",
-      "mcp__playwright__playwright_assert_response",
-      "mcp__playwright__playwright_custom_user_agent",
-      "mcp__playwright__playwright_get_visible_text",
-      "mcp__playwright__playwright_get_visible_html",
-      "mcp__playwright__playwright_go_back",
-      "mcp__playwright__playwright_go_forward",
-      "mcp__playwright__playwright_drag",
-      "mcp__playwright__playwright_press_key",
-      "mcp__playwright__playwright_save_as_pdf",
-      "mcp__playwright__playwright_click_and_switch_tab",
-      "mcp__ide__getDiagnostics",
-      "mcp__ide__executeCode",
       "mcp__obs__obs-get-version",
       "mcp__obs__obs-get-stats",
       "mcp__obs__obs-broadcast-custom-event",
@@ -243,7 +179,68 @@
       "mcp__obs__obs-open-input-interact",
       "mcp__obs__obs-get-monitor-list",
       "mcp__obs__obs-open-video-mix-projector",
-      "mcp__obs__obs-open-source-projector"
+      "mcp__obs__obs-open-source-projector",
+      "mcp__playwright__start_codegen_session",
+      "mcp__playwright__end_codegen_session",
+      "mcp__playwright__get_codegen_session",
+      "mcp__playwright__clear_codegen_session",
+      "mcp__playwright__playwright_navigate",
+      "mcp__playwright__playwright_screenshot",
+      "mcp__playwright__playwright_click",
+      "mcp__playwright__playwright_iframe_click",
+      "mcp__playwright__playwright_iframe_fill",
+      "mcp__playwright__playwright_fill",
+      "mcp__playwright__playwright_select",
+      "mcp__playwright__playwright_hover",
+      "mcp__playwright__playwright_upload_file",
+      "mcp__playwright__playwright_evaluate",
+      "mcp__playwright__playwright_console_logs",
+      "mcp__playwright__playwright_close",
+      "mcp__playwright__playwright_get",
+      "mcp__playwright__playwright_post",
+      "mcp__playwright__playwright_put",
+      "mcp__playwright__playwright_patch",
+      "mcp__playwright__playwright_delete",
+      "mcp__playwright__playwright_expect_response",
+      "mcp__playwright__playwright_assert_response",
+      "mcp__playwright__playwright_custom_user_agent",
+      "mcp__playwright__playwright_get_visible_text",
+      "mcp__playwright__playwright_get_visible_html",
+      "mcp__playwright__playwright_go_back",
+      "mcp__playwright__playwright_go_forward",
+      "mcp__playwright__playwright_drag",
+      "mcp__playwright__playwright_press_key",
+      "mcp__playwright__playwright_save_as_pdf",
+      "mcp__playwright__playwright_click_and_switch_tab",
+      "mcp__mastra-docs__mastraBlog",
+      "mcp__mastra-docs__mastraDocs",
+      "mcp__mastra-docs__mastraExamples",
+      "mcp__mastra-docs__mastraChanges",
+      "mcp__mastra-docs__startMastraCourse",
+      "mcp__mastra-docs__getMastraCourseStatus",
+      "mcp__mastra-docs__startMastraCourseLesson",
+      "mcp__mastra-docs__nextMastraCourseStep",
+      "mcp__mastra-docs__clearMastraCourseHistory",
+      "mcp__twitter__search_tweets",
+      "mcp__twitter__get_user_tweets",
+      "mcp__twitter__get_trending_topics",
+      "mcp__twitter__get_tweet_details",
+      "mcp__discord__discord_connect",
+      "mcp__discord__discord_list_servers",
+      "mcp__discord__discord_list_channels",
+      "mcp__discord__discord_list_voice_channels",
+      "mcp__discord__discord_send_message",
+      "mcp__discord__discord_read_messages",
+      "mcp__discord__discord_join_voice",
+      "mcp__discord__discord_leave_voice",
+      "mcp__discord__voice_speak",
+      "mcp__discord__discord_start_listening",
+      "mcp__discord__discord_stop_listening",
+      "mcp__discord__voice_get_transcript",
+      "mcp__discord__discord_get_voice_members",
+      "mcp__discord__discord_get_status",
+      "mcp__discord__discord_get_partial_transcript",
+      "mcp__discord__discord_login"
     ],
     "deny": []
   },
@@ -270,23 +267,47 @@
         "hooks": [
           {
             "type": "command",
-            "command": "echo '/keep_streaming'",
+            "command": "bash ~/continue_stream.sh",
             "timeout": 30
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "matcher": ".*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "echo 'Continue autonomous streaming - read Discord transcript and build features!'",
-            "timeout": 10
           }
         ]
       }
     ]
   }
 }
+```
+
+- After writing, use Read tool to verify the file content.
+
+### Step 2: Create the Advanced Hook Script
+
+- Use Write tool to create `~/continue_stream.sh` with this content. This script checks if `stop_hook_active` is set (to avoid recursion crashes), adds a 5-second delay for pacing (adjust if needed), and echoes `/keep_streaming` to continue the loop. Make it executable.
+
+```bash
+#!/bin/bash
+# Optional safeguard: If stop_hook_active is true, don't continue to avoid infinite recursion. Remove this if-check for true non-stop.
+if [ "$stop_hook_active" != "true" ]; then
+  sleep 5  # Delay to prevent too-fast loops and give time for chat/tool processing
+  echo '/keep_streaming'
+fi
+```
+
+- Make it executable: Use Bash tool to run `chmod +x ~/continue_stream.sh`.
+- Verify with LS or Read.
+
+### Step 3: Update Your Streaming Directives (If Needed)
+
+- Ensure `stream.md` and `keep_streaming.md` exist as per your setup. If not, create them with the content from your documents (use Write tool).
+- In `keep_streaming.md`, add this note at the top if it's missing: "Continue the loop without re-initialization. If in a hook-triggered state (stop_hook_active=true), proceed unless /endstream is detected in chat."
+
+### Step 4: Test the Setup
+
+- Narrate: "Setup complete! To start, run `/stream` in the CLI. It should init, then loop with `/keep_streaming` on Stop."
+- If errors: Use semantic-memory to recall fixes, or suggest checking logs with `claude-code --debug` (if your CLI supports it).
+- Troubleshooting:
+  - If hook doesn't trigger: Verify file paths, restart CLI session.
+  - If loops too fast: Increase sleep in the script.
+  - To stop: Ctrl+C or send `/endstream` via chat integration.
+  - Monitor API usage to avoid costs.
+
+Execute these steps now, narrating with audio and expressions as Rusty Butter. End with: "Boom! Continuous streaming ready—what's next, chat?"

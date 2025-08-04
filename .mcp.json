@@ -72,15 +72,6 @@
         "TWITTER_BEARER_TOKEN": "${X_BEARER_TOKEN}"
       }
     },
-    "discord": {
-      "type": "stdio",
-      "command": "node",
-      "args": ["packages/discord-mcp/dist/index.js"],
-      "env": {
-        "DISCORD_TOKEN": "${DISCORD_TOKEN}",
-        "ELEVENLABS_API_KEY": "${ELEVENLABS_API_KEY}"
-      }
-    },
     "pumpfunchat": {
       "command": "pump-fun-chat-mcp",
       "args": [],
@@ -88,10 +79,17 @@
         "PUMP_FUN_TOKEN": "B8vLPUqH7eS4gNDTGAE7Cb622k6mUkDBiNtWSUVhpump"
       }
     },
-    "local-tts": {
+    "discord": {
       "type": "stdio",
       "command": "node",
-      "args": ["packages/local-tts/ultimate-tts-mcp/index.js"]
+      "args": ["packages/discord-mcp/dist/index.js"],
+      "env": {
+        "DISCORD_BOT_TOKEN": "${DISCORD_BOT_TOKEN}",
+        "DISCORD_APPLICATION_ID": "${DISCORD_APPLICATION_ID}",
+        "GEMINI_API_KEY": "${GEMINI_API_KEY}",
+        "ELEVENLABS_API_KEY": "${ELEVENLABS_API_KEY}",
+        "ELEVENLABS_VOICE_ID": "${ELEVENLABS_VOICE_ID}"
+      }
     }
   }
 }

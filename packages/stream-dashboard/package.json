@@ -1,0 +1,14 @@
+{
+  "name": "stream-dashboard",
+  "version": "1.0.0",
+  "description": "Real-time dashboard for autonomous streaming",
+  "type": "module",
+  "main": "websocket-server.js",
+  "scripts": {
+    "start": "node websocket-server.js",
+    "dev": "node websocket-server.js"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}

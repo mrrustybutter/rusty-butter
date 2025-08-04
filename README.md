@@ -18,7 +18,6 @@ A comprehensive development ecosystem built around Claude Code with semantic mem
   - `packages/client` - Semantic memory client library
   - `packages/mcp-server` - MCP server for semantic search and recall
 - `packages/openai-complete-mcp` - OpenAI integration for Claude Code
-- `packages/twitch-embedder` - Real-time Twitch chat embedding service
 
 ### Streaming & Content
 

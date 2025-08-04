@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stream Status - OBS Browser Source</title>
+    <style>
+        body {
+            background: transparent;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            margin: 0;
+            padding: 10px;
+        }
+        
+        .status-bar {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        .metric {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .metric-label {
+            color: #ffff00;
+            font-size: 0.9em;
+        }
+        
+        .metric-value {
+            color: #00ffff;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+        
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #00ff00;
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .divider {
+            width: 1px;
+            height: 20px;
+            background: #00ff00;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <div class="metric">
+            <span class="status-indicator"></span>
+            <span class="metric-label">MODE:</span>
+            <span class="metric-value">AUTONOMOUS</span>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="metric">
+            <span class="metric-label">DISCORD:</span>
+            <span class="metric-value" id="discord-status">CONNECTED</span>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="metric">
+            <span class="metric-label">SCENE:</span>
+            <span class="metric-value" id="scene-name">CODING</span>
+        </div>
+        
+        <div class="divider"></div>
+        
+        <div class="metric">
+            <span class="metric-label">AUTONOMY:</span>
+            <span class="metric-value" id="autonomy-level">87%</span>
+        </div>
+    </div>
+    
+    <script>
+        // Connect to WebSocket server if deployed
+        try {
+            const ws = new WebSocket('ws://localhost:8090');
+            
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                
+                if (data.type === 'update' || data.type === 'metrics') {
+                    // Update displayed values based on real data
+                    if (data.data?.obs?.currentScene) {
+                        document.getElementById('scene-name').textContent = 
+                            data.data.obs.currentScene.toUpperCase().replace(' ', '-');
+                    }
+                    if (data.data?.system?.autonomyLevel) {
+                        document.getElementById('autonomy-level').textContent = 
+                            data.data.system.autonomyLevel + '%';
+                    }
+                    if (data.data?.discord?.voiceConnected !== undefined) {
+                        document.getElementById('discord-status').textContent = 
+                            data.data.discord.voiceConnected ? 'CONNECTED' : 'OFFLINE';
+                    }
+                }
+            };
+        } catch (e) {
+            // WebSocket not available, use static display
+            console.log('WebSocket not available, using static display');
+        }
+        
+        // Simulate some activity for demo purposes
+        setInterval(() => {
+            const autonomy = document.getElementById('autonomy-level');
+            const current = parseInt(autonomy.textContent);
+            const change = Math.floor(Math.random() * 5) - 2;
+            autonomy.textContent = Math.max(0, Math.min(100, current + change)) + '%';
+        }, 3000);
+    </script>
+</body>
+</html>

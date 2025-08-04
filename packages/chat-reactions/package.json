@@ -1,0 +1,12 @@
+{
+  "name": "chat-reactions",
+  "version": "1.0.0",
+  "description": "Autonomous chat reaction system for streaming",
+  "type": "module",
+  "main": "reaction-system.js",
+  "scripts": {
+    "start": "node reaction-system.js",
+    "test": "node reaction-system.js"
+  },
+  "dependencies": {}
+}
